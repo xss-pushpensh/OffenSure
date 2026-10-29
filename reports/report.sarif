@@ -1,0 +1,23 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "OffenSure",
+          "version": "0.1.0"
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CWE-000",
+          "level": "warning",
+          "message": {
+            "text": "Unknown in /home/kali/OffenSure/reports/artifacts/crash-f29c7f58bcf404cc18636586448c64b2c1f585b6"
+          }
+        }
+      ]
+    }
+  ]
+}

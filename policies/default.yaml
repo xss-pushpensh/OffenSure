@@ -1,0 +1,10 @@
+fail_on_tiers:
+  - P0
+  - P1
+warn_on_tiers:
+  - P2
+ignore_tiers:
+  - P3
+exposure: internal
+max_crashes: 50
+max_fuzz_time: 60

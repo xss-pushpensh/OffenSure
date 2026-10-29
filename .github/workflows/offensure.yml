@@ -1,0 +1,34 @@
+name: OffenSure Security Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  offensure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: |
+          sudo apt update
+          sudo apt install -y clang llvm lld build-essential gdb
+          pip install -e .
+      - name: Run OffenSure pipeline
+        run: |
+          offensure pipeline \
+            --target-dir targets/example_lib \
+            --header example_lib.h \
+            --fuzz-time 30 \
+            --output reports \
+            --policy-file policies/default.yaml
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: offensure-report
+          path: reports/

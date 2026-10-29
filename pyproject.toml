@@ -1,0 +1,16 @@
+[project]
+name = "offensure"
+version = "0.1.0"
+description = "Offensive Product Security Platform - Fuzzing, Reachability & Auto-Remediation"
+authors = [{name = "Your Name"}]
+requires-python = ">=3.10"
+
+[project.scripts]
+offensure = "offensure.cli.main:app"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["offensure*"]

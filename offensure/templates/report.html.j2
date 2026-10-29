@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>OffenSure Report</title>
+<style>
+body { font-family: system-ui, sans-serif; margin: 2rem; background: #0d1117; color: #c9d1d9; }
+h1 { color: #58a6ff; }
+table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+th, td { border: 1px solid #30363d; padding: 8px 12px; text-align: left; }
+th { background: #161b22; color: #58a6ff; }
+.P0 { color: #ff7b72; font-weight: bold; }
+.P1 { color: #ffa657; font-weight: bold; }
+.P2 { color: #d2a8ff; }
+.P3 { color: #8b949e; }
+pre { background: #161b22; padding: 1rem; overflow: auto; border-radius: 6px; }
+.summary { display: flex; gap: 2rem; margin: 1rem 0; }
+.card { background: #161b22; padding: 1rem 2rem; border-radius: 8px; }
+</style>
+</head>
+<body>
+<h1>OffenSure — Offensive Product Security Report</h1>
+
+<div class="summary">
+  <div class="card"><h3>Total</h3><p>{{ findings|length }}</p></div>
+  <div class="card"><h3>P0</h3><p>{{ findings|selectattr("score.tier","equalto","P0")|list|length }}</p></div>
+  <div class="card"><h3>P1</h3><p>{{ findings|selectattr("score.tier","equalto","P1")|list|length }}</p></div>
+  <div class="card"><h3>P2</h3><p>{{ findings|selectattr("score.tier","equalto","P2")|list|length }}</p></div>
+</div>
+
+<table>
+<tr><th>Tier</th><th>Score</th><th>Type</th><th>CWE</th><th>CVSS</th><th>Static</th><th>Runtime</th><th>Crash File</th></tr>
+{% for f in findings %}
+<tr>
+  <td class="{{ f.score.tier }}">{{ f.score.tier }}</td>
+  <td>{{ f.score.score }}</td>
+  <td>{{ f.score.type }}</td>
+  <td>{{ f.score.cwe }}</td>
+  <td>{{ f.score.cvss }}</td>
+  <td>{{ f.score.static_reachable }}</td>
+  <td>{{ f.score.runtime_reachable }}</td>
+  <td>{{ f.crash.crash_file.split('/')[-1] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<h2>Details</h2>
+{% for f in findings %}
+<h3 class="{{ f.score.tier }}">{{ f.score.tier }} — {{ f.score.type }} ({{ f.score.cwe }})</h3>
+<p><b>Crash file:</b> {{ f.crash.crash_file }}</p>
+<p><b>Score:</b> {{ f.score.score }} | <b>CVSS:</b> {{ f.score.cvss }} | <b>Exposure:</b> {{ f.score.exposure }}</p>
+<pre>{{ f.crash.output[:1500] }}</pre>
+{% endfor %}
+</body>
+</html>

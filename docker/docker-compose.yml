@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  fuzzer:
+    build:
+      context: .
+      dockerfile: Dockerfile.fuzz
+    volumes:
+      - ../targets:/work/targets
+      - ../reports:/work/reports
+    working_dir: /work
+    command: bash
+    tty: true
+    stdin_open: true
+    security_opt:
+      - seccomp:unconfined
